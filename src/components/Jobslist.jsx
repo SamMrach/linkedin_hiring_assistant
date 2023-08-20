@@ -1,3 +1,4 @@
+/*global chrome*/
 import React, { useEffect } from 'react'
 import { useState } from 'react';
 import Button from '@mui/material/Button';
@@ -15,6 +16,11 @@ export const Jobslist = () => {
     const goToAddJob=()=>{
         navigate('/add_job');
     }
+
+    const evaluateCandidate=()=>{
+        chrome.runtime.sendMessage({req:"scrape experiences"})
+      
+    }
   return (
     <>
    
@@ -26,6 +32,7 @@ export const Jobslist = () => {
  {jobs.length  && jobs.map(job=>{
     return (<Job title={job.title} />)
 })}
+    <Button variant="outlined" onClick={evaluateCandidate} >Evaluate Candidate</Button> 
     </>
        
   )
