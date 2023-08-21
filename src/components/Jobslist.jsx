@@ -5,9 +5,11 @@ import Button from '@mui/material/Button';
 import { useNavigate } from 'react-router-dom';
 import { Job } from './Job';
 import { ProfileResults } from '../models/ProfileResults';
+import LoadingButton from '@mui/lab/LoadingButton';
 
 export const Jobslist = () => {
     const [jobs,setJobs]=useState([]);
+    const [loading,setLoading]=useState(false);
     useEffect(()=>{
         if(localStorage.getItem("jobs") !== null){
             setJobs(JSON.parse(localStorage.getItem("jobs")));
@@ -18,6 +20,7 @@ export const Jobslist = () => {
                 let profileResults=new ProfileResults(msg.experiences);
                 profileResults.build();
                 console.log("profile ",profileResults);
+                setLoading(false);
             }
         })
     },[])
@@ -27,8 +30,9 @@ export const Jobslist = () => {
     }
 
     const evaluateCandidate=()=>{
+        setLoading(true);
         chrome.runtime.sendMessage({req:"scrape experiences"})
-      
+        
     }
   return (
     <>
@@ -41,7 +45,13 @@ export const Jobslist = () => {
  {jobs.length  && jobs.map(job=>{
     return (<Job title={job.title} />)
 })}
-    <Button variant="outlined" onClick={evaluateCandidate} >Evaluate Candidate</Button> 
+    <LoadingButton
+        loading={loading}
+        onClick={evaluateCandidate}
+        variant="outlined"
+      >
+        Evaluate Candidate
+      </LoadingButton>
     </>
        
   )
