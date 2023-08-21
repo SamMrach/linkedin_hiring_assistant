@@ -12,11 +12,22 @@ const scrapeExperiences=()=>{
     Array.from(document.querySelectorAll(".mr1")).forEach(job=>{
         experiences.push({
             jobTitle:job.childNodes[1].innerText,
-            companyTitle:job.parentNode.parentNode.parentNode.nextElementSibling.childNodes[1].innerText,
-            duration:job.parentNode.parentNode.parentNode.nextElementSibling.nextElementSibling.childNodes[1].innerText.split(" · ")[1],
-            description:job.parentNode.parentNode.parentNode.parentElement.parentElement.nextElementSibling.innerText
+            companyTitle:formatCompanyName(job.parentNode.parentNode.parentNode.nextElementSibling.childNodes[1].innerText),
+            duration:formatDuration(job.parentNode.parentNode.parentNode.nextElementSibling.nextElementSibling.childNodes[1].innerText.split(" · ")[1]),
+            //description:job.parentNode.parentNode.parentNode.parentElement.parentElement.nextElementSibling.innerText
         })
     })
    res(experiences);
     })
+}
+
+function formatDuration(duration){
+  if(duration.includes("year")) return parseInt(duration.split("year")[0]);
+  else if(duration.includes("yr")) return parseInt(duration.split("yr")[0]);
+  else if(duration.includes("mos")) return parseFloat(duration.split("mos")[0]/12).toFixed(1);
+  else return 0;
+}
+
+function formatCompanyName(companyName){
+    return companyName.split("·")[0];
 }

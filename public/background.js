@@ -1,6 +1,5 @@
 
 
-
 const handleScrapeExperiences=async (resp)=>{
     if(!await isLinkedinProfilePage()){
         //alert("not a valid page, move to a linkedin profile page")
@@ -11,22 +10,24 @@ const handleScrapeExperiences=async (resp)=>{
     chrome.tabs.create({
     url: profilUrl+"/details/experience/", 
     active:false
-  }).then( tab=>{
-    waitForCreatedTabToSendMsg();
-        
+  }).then(async tab=>{
+    const experiences=await scrapeExperiencesFromCreatedTab();
+    returnDataToPopupScript(experiences);
   });
 }
 
-const waitForCreatedTabToSendMsg=()=>{
-    chrome.tabs.onUpdated.addListener(function(tabId, changeInfo, tab) {
-        // make sure the status is 'complete' and it's the right tab
+const scrapeExperiencesFromCreatedTab=()=>{
+    return new Promise(resolve=>{
+         chrome.tabs.onUpdated.addListener(function(tabId, changeInfo, tab) {
         if (tab.url.indexOf('details/experience/') != -1 && changeInfo.status == 'complete') {
             chrome.tabs.sendMessage(tab.id,{req:"scrape experiences"},(res)=>{
-                console.log(res);
                 chrome.tabs.remove(tab.id);
-            });
+                resolve(res);
+            })
         }
     });
+    })
+   
 }
 
  const isLinkedinProfilePage= async()=>{
@@ -37,9 +38,16 @@ const getProfileUrl=async()=>{
     const tabs=await chrome.tabs.query({ active: true, currentWindow: true });
     return  tabs[0].url;
 }
+ 
+const returnDataToPopupScript=(experiences)=>{
+    chrome.runtime.sendMessage({req:'scraped experiences',experiences})
+}
+
 const handlers={
     "scrape experiences":handleScrapeExperiences
 }
+
 chrome.runtime.onMessage.addListener((request,sender,response)=>{
    handlers[request.req](response);
 })
+

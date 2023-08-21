@@ -4,6 +4,7 @@ import { useState } from 'react';
 import Button from '@mui/material/Button';
 import { useNavigate } from 'react-router-dom';
 import { Job } from './Job';
+import { ProfileResults } from '../models/ProfileResults';
 
 export const Jobslist = () => {
     const [jobs,setJobs]=useState([]);
@@ -11,6 +12,14 @@ export const Jobslist = () => {
         if(localStorage.getItem("jobs") !== null){
             setJobs(JSON.parse(localStorage.getItem("jobs")));
         }
+        chrome.runtime.onMessage.addListener((msg)=>{
+            if(msg.req="scraped experiences"){
+                console.log(msg.experiences);
+                let profileResults=new ProfileResults(msg.experiences);
+                profileResults.build();
+                console.log("profile ",profileResults);
+            }
+        })
     },[])
     const navigate=useNavigate();
     const goToAddJob=()=>{
