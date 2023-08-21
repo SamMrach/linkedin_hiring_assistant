@@ -21,6 +21,7 @@ export const Jobslist = () => {
                 profileResults.build();
                 console.log("profile ",profileResults);
                 setLoading(false);
+                navigate("/profile_results",{state:{profileResults}})
             }
         })
     },[])
@@ -49,6 +50,9 @@ export const Jobslist = () => {
         loading={loading}
         onClick={evaluateCandidate}
         variant="outlined"
+        sx={{
+            margin:"4px 0px"
+        }}
       >
         Evaluate Candidate
       </LoadingButton>
