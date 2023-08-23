@@ -10,7 +10,7 @@ export function renderDomain(domainData){
 }
 export function renderEmployeeRange(employeeRangeData){
     return employeeRangeData.map(emplCompany=>(
-        emplCompany.employeRange!== null ?
+        emplCompany.employeRange!== undefined ?
         <p className="block_element">{emplCompany.employeRange} employees:  {emplCompany.years} years at {emplCompany.company}</p>
          :null
         ))

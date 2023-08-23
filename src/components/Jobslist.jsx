@@ -46,14 +46,16 @@ export const Jobslist = () => {
        companiesClearBitData.map(cmp=>companiesDataMap.set(cmp.name,cmp));
        console.log("companies map data",companiesDataMap);
        experiences.map(exp=>{
-        if(companiesDataMap.has(exp.companyTitle)){
-            let companyClearbitData=companiesDataMap.get(exp.companyTitle);
+        if(companiesDataMap.has(exp.companyTitle.trim())){
+            console.log(companiesDataMap.get(exp.companyTitle.trim()))
+            let companyClearbitData=companiesDataMap.get(exp.companyTitle.trim());
             exp.industry=companyClearbitData.industry;
             exp.employees_range=companyClearbitData.employees_range;
             exp.fund_amount=companyClearbitData.fund_amount;
         }
         
        })
+       
        console.log("exp details",experiences);
        return experiences;
     }
