@@ -1,5 +1,4 @@
 import { Experience } from "./Experience";
-
 class Domain{
   domain:string="";
   experience:Number=0;
@@ -7,7 +6,7 @@ class Domain{
   
 }
 interface EmployeRange {
- employeRange:Number,
+ employeRange:string,
  years:Number,
  company:string
 }
@@ -33,30 +32,34 @@ class notes{
 }
 
 export class ProfileResults{
-    experiencesData:Experience[]=[];
     domain:Domain=new Domain();
     employeeRanges:EmployeRange[]=[];
     ventureBackedCompanies:ventureBacked[]=[];
     jobExperiences:jobExperience[]=[];
     companyTenure:companyTenure=new companyTenure();
-    notes:notes=new notes()
+    notes:notes=new notes();
+
+    experiencesData:Experience[]=[];
+    hiringCompany:{};
 
     constructor(experiencesData:[]){
         this.experiencesData=experiencesData;
     }
-
+    
+   
     fillDomain(){
         this.experiencesData.map((exp:Experience)=>{
           this.domain.experiences.push({
             companyTitle:exp.companyTitle,
             duration:exp.duration});
         })
+
     }
 
     fillEmployeRange(){
         this.experiencesData.map((exp:any)=>{
             this.employeeRanges.push({
-              employeRange:100,
+              employeRange:exp.employees_range,
               years:exp.duration,
               company:exp.companyTitle
             })
@@ -66,7 +69,7 @@ export class ProfileResults{
     fillVentureBacked(){
         this.experiencesData.map((exp:any)=>{
             this.ventureBackedCompanies.push({
-              fundAmount:100,
+              fundAmount:exp.fund_amount,
               years:exp.duration,
               company:exp.companyTitle
             })
@@ -103,6 +106,7 @@ export class ProfileResults{
      getNumberOfYearsOfExperience(duration:String){
       return parseInt(duration.split("year")[0]);
     }
+    
 
     build(){
         this.fillDomain();

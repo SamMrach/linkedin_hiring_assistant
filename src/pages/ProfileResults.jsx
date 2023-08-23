@@ -2,7 +2,7 @@ import React, { useEffect } from 'react'
 import '../styles/ProfileContainer.css'
 import { useState } from 'react';
 import Button from '@mui/material/Button';
-import { renderDomain,renderEmployeeRange,renderVentureBacked,renderRecentJobs,renderCompanyTenure } from '../Utils/Utils';
+import { renderDomain,renderEmployeeRange,renderVentureBacked,renderRecentJobs,renderCompanyTenure } from '../Utils/Renders';
 import { TextField } from '@mui/material'
 import { useLocation } from 'react-router-dom';
 export default function ProfileResults() {
@@ -23,7 +23,7 @@ export default function ProfileResults() {
         companyTenure,
         notes}=state.profileResults;
     useEffect(()=>{
-      console.log(domain)
+      console.log("profile results",state.profileResults)
     },[])
   return (
     <div className='profile_container'>

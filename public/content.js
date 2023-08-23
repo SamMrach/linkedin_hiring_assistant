@@ -1,3 +1,4 @@
+
 chrome.runtime.onMessage.addListener(async(request,sender,response)=>{
     if(request.req=="scrape experiences"){
         const experiences=await scrapeExperiences();
@@ -9,6 +10,7 @@ chrome.runtime.onMessage.addListener(async(request,sender,response)=>{
 const scrapeExperiences=()=>{
     return new Promise(res=>{
          let experiences=[];
+         
     Array.from(document.querySelectorAll(".mr1")).forEach(job=>{
         experiences.push({
             jobTitle:job.childNodes[1].innerText,
@@ -17,6 +19,7 @@ const scrapeExperiences=()=>{
             //description:job.parentNode.parentNode.parentNode.parentElement.parentElement.nextElementSibling.innerText
         })
     })
+
    res(experiences);
     })
 }
@@ -31,3 +34,4 @@ function formatDuration(duration){
 function formatCompanyName(companyName){
     return companyName.split("·")[0];
 }
+
