@@ -41,7 +41,7 @@ export default function ProfileResults() {
           {renderVentureBacked(ventureBackedCompanies)}
         </div>
         <div className="block">
-           <h3 className="block_title">Job Title </h3>
+           <h3 className="block_title">Most Recent Jobs  </h3>
            {renderRecentJobs(jobExperiences)}
         </div>
 

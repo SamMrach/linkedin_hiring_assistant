@@ -15,7 +15,7 @@ const scrapeExperiences=()=>{
         experiences.push({
             jobTitle:job.childNodes[1].innerText,
             companyTitle:formatCompanyName(job.parentNode.parentNode.parentNode.nextElementSibling.childNodes[1].innerText),
-            duration:formatDuration(job.parentNode.parentNode.parentNode.nextElementSibling.nextElementSibling.childNodes[1].innerText.split(" · ")[1]),
+            duration:job.parentNode.parentNode.parentNode.nextElementSibling.nextElementSibling.childNodes[1].innerText.split(" · ")[1],
             //description:job.parentNode.parentNode.parentNode.parentElement.parentElement.nextElementSibling.innerText
         })
     })

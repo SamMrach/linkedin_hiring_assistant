@@ -1,7 +1,7 @@
 export interface Experience{
     jobTitle:string,
     companyTitle:string,
-    duration:number,
+    duration:string,
     description:string,
     industry:number,
     employees_range:string,

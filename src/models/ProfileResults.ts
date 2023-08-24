@@ -8,21 +8,21 @@ class Domain{
 }
 interface EmployeRange {
  employeRange:string,
- years:Number,
+ yearsOfExperience:string,
  company:string
 }
 interface ventureBacked{
     fundAmount:number,
-    years:Number,
+    years:string,
     company:string
 }
 interface jobExperience{
     jobTitle:String,
-    years:number
+    yearsOfExperience:string
 }
 
 class companyTenure{
-    averageTenure:Number=0;
+    averageTenure:string;
     shortestTenure:number=0;
     shortestCompanyName:string=""
 }
@@ -58,16 +58,16 @@ export class ProfileResults{
     
    
     fillDomain(){
-        let yearsOfExperience=0;
+        //let yearsOfExperience=0;
         this.experiencesData.map((exp:Experience)=>{
-            if(exp.industry==this.hiringCompany.industry) 
-            yearsOfExperience+=exp.duration;
+            // if(exp.industry==this.hiringCompany.industry) 
+            // yearsOfExperience+=exp.duration;
           this.domain.experiences.push({
             companyTitle:exp.companyTitle,
             duration:exp.duration});
         })
-        if(yearsOfExperience) 
-        this.domain.yearsOfExperience=yearsOfExperience;
+        //if(yearsOfExperience) 
+        //this.domain.yearsOfExperience=yearsOfExperience;
 
     }
 
@@ -75,7 +75,7 @@ export class ProfileResults{
         this.experiencesData.map((exp:any)=>{
             this.employeeRanges.push({
               employeRange:exp.employees_range,
-              years:exp.duration,
+              yearsOfExperience:exp.duration,
               company:exp.companyTitle
             })
         })
@@ -96,32 +96,47 @@ export class ProfileResults{
           this.jobExperiences.push({
             //this.experiencesData[i].jobTitle
             jobTitle:this.experiencesData[i].jobTitle,
-            years:this.experiencesData[i].duration
+            yearsOfExperience:this.experiencesData[i].duration
           })
        } 
     }
 
     fillCompanyTenure(){
-        let numberOfCompanies=this.experiencesData.length;
-        let totalExperience:number=this.experiencesData.reduce((total:number,currentExp:Experience)=>{
-          return  total+currentExp.duration;
-        },0);
-       
-        this.companyTenure.averageTenure=Math.round(totalExperience/numberOfCompanies)
-        this.experiencesData.map((exp:Experience)=>{
-           if(exp.duration<5){
-              this.companyTenure.shortestTenure=exp.duration;
-              this.companyTenure.shortestCompanyName=exp.companyTitle;
-              return;
-           }
+        this.companyTenure.averageTenure=this.calculateAverageTenure();
+        // this.experiencesData.map((exp:Experience)=>{
+        //    if(exp.duration<5){
+        //       this.companyTenure.shortestTenure=exp.duration;
+        //       this.companyTenure.shortestCompanyName=exp.companyTitle;
+        //       return;
+        //    }
 
-        })
+        // })
         
     }
-   
-     getNumberOfYearsOfExperience(duration:String){
-      return parseInt(duration.split("year")[0]);
+    calculateAverageTenure(){
+        let totalYears=0,totalMonths=0;
+        this.experiencesData.map(exp=>{
+             let numbers=exp.duration.match(/\d+/g);
+             if(numbers==null) return;
+             if(numbers.length==2){
+                totalYears+= parseInt(numbers[0]);
+                totalMonths+=parseInt(numbers[1]);
+             } else if(numbers.length==1){
+                if(exp.duration.includes("yr")) totalYears+= parseInt(numbers[0]);
+                else totalMonths+=parseInt(numbers[0]);
+             }
+           
+        })
+         // @ts-ignore
+        let totalExperiencesInMonths=totalYears*12 + totalMonths;
+        let averageExperienceInMonths=Math.round(totalExperiencesInMonths/this.experiencesData.length);
+        if(averageExperienceInMonths<12) return  averageExperienceInMonths+ " months ";   
+        let averageTenure= Math.ceil(averageExperienceInMonths/12)+" years "
+        + (averageExperienceInMonths %  12) +" months ";
+        return averageTenure;
+        
     }
+     
     
 
     build(){
