@@ -7,27 +7,32 @@ export async function fetchCompanyData(companyName){
     }catch(e){
      return Promise.reject(e);
     }
-    console.log(DOMAIN)
-     
-    const API_KEY = 'sk_6e39d6ee2a598061f11e93866c1093b2';
-    const url = `https://company.clearbit.com/v2/companies/find?domain=${DOMAIN}`;
-    const headers = {
-      Authorization: `Bearer ${API_KEY}`,
-    }; 
-    let res=await  fetch(url, { headers });
-    let data=await res.json();
-    let {name,category,metrics} = data;
-         
-        let companyData={
-          'name':name,
-           'industry':category.industry,
-           'employees_range':metrics.employeesRange,
-           'fund_amount':metrics.raised
-
-        }
-        console.log(companyData);
-      return companyData;
+    let data = await fetchCompanyDataByDomain(DOMAIN);
+    return data;
   
+}
+
+export async function fetchCompanyDataByDomain(DOMAIN){
+    
+  const API_KEY = 'sk_6e39d6ee2a598061f11e93866c1093b2';
+  const url = `https://company.clearbit.com/v2/companies/find?domain=${DOMAIN}`;
+  const headers = {
+    Authorization: `Bearer ${API_KEY}`,
+  }; 
+  let res=await  fetch(url, { headers });
+  let data=await res.json();
+  let {name,category,metrics,domain} = data;
+       
+      let companyData={
+        'name':name,
+         'industry':category.industry,
+         'employees_range':metrics.employeesRange,
+         'fund_amount':metrics.raised,
+         'domain':domain
+
+      }
+      console.log(companyData);
+    return companyData;
 }
 
 export async function fetchDomainByName(companyName){

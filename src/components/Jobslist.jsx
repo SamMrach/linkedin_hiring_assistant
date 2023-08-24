@@ -38,9 +38,10 @@ export const Jobslist = () => {
     }
 
     async function fillExperiencesWithClearbitData(experiences){
-       const companiesName=[...new Set(experiences.map(exp=>exp.companyTitle.trim()))]; 
+        console.log(experiences)
+       const companiesName=[...new Set(experiences.map(exp=>exp.companyTitle))]; 
        const companiesClearBitData=await fetchCompaniesData(companiesName);
-       console.log(experiences)
+      
        console.log(companiesClearBitData);
        let companiesDataMap=new Map();
        companiesClearBitData.map(cmp=>companiesDataMap.set(cmp.name,cmp));

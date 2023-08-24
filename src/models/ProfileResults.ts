@@ -1,7 +1,8 @@
+
 import { Experience } from "./Experience";
 class Domain{
   domain:string="";
-  experience:Number=0;
+  yearsOfExperience:number=0;
   experiences:[]=[]
   
 }
@@ -40,19 +41,33 @@ export class ProfileResults{
     notes:notes=new notes();
 
     experiencesData:Experience[]=[];
-    hiringCompany:{};
+    hiringCompany:{   
+        jobTitle:string,
+        industry:number,
+        employees_range:string,
+        fund_amount:string,
+        };
 
     constructor(experiencesData:[]){
         this.experiencesData=experiencesData;
+        // @ts-ignore
+        if(localStorage.getItem('hiring company'))
+        // @ts-ignore
+        this.hiringCompany=JSON.parse(localStorage.getItem('hiring company'))
     }
     
    
     fillDomain(){
+        let yearsOfExperience=0;
         this.experiencesData.map((exp:Experience)=>{
+            if(exp.industry==this.hiringCompany.industry) 
+            yearsOfExperience+=exp.duration;
           this.domain.experiences.push({
             companyTitle:exp.companyTitle,
             duration:exp.duration});
         })
+        if(yearsOfExperience) 
+        this.domain.yearsOfExperience=yearsOfExperience;
 
     }
 
@@ -88,9 +103,10 @@ export class ProfileResults{
 
     fillCompanyTenure(){
         let numberOfCompanies=this.experiencesData.length;
-        let totalExperience=this.experiencesData.reduce((total:any,currentExp:Experience)=>{
+        let totalExperience:number=this.experiencesData.reduce((total:number,currentExp:Experience)=>{
           return  total+currentExp.duration;
-        },0)
+        },0);
+       
         this.companyTenure.averageTenure=Math.round(totalExperience/numberOfCompanies)
         this.experiencesData.map((exp:Experience)=>{
            if(exp.duration<5){

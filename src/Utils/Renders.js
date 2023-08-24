@@ -10,7 +10,7 @@ export function renderDomain(domainData){
 }
 export function renderEmployeeRange(employeeRangeData){
     return employeeRangeData.map(emplCompany=>(
-        emplCompany.employeRange!== undefined ?
+        emplCompany.employeRange ?
         <p className="block_element">{emplCompany.employeRange} employees:  {emplCompany.years} years at {emplCompany.company}</p>
          :null
         ))
@@ -18,7 +18,7 @@ export function renderEmployeeRange(employeeRangeData){
 
 export function renderVentureBacked(ventureData){
     return ventureData.map(ventureComp=>(
-        ventureComp.fundAmount !== null ?
+        ventureComp.fundAmount ?
         <p className="block_element">{ventureComp.years} years at {ventureComp.company} with ${ventureComp.fundAmount}funding</p>
         :null
         ))
@@ -27,7 +27,7 @@ export function renderVentureBacked(ventureData){
 
 export function renderRecentJobs(recentJobs){
     return recentJobs.map(job=>(
-        <p className="block_element">{job.years} years at {job.jobTitle} </p>
+        <p className="block_element">{job.years} years as a  {job.jobTitle} </p>
     ))
 }
 

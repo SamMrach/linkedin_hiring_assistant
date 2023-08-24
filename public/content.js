@@ -27,11 +27,17 @@ const scrapeExperiences=()=>{
 function formatDuration(duration){
   if(duration.includes("year")) return parseInt(duration.split("year")[0]);
   else if(duration.includes("yr")) return parseInt(duration.split("yr")[0]);
-  else if(duration.includes("mos")) return parseFloat(duration.split("mos")[0]/12).toFixed(1);
+  else if(duration.includes("mos")) return Number(parseFloat(duration.split("mos")[0]/12).toFixed(1));
   else return 0;
 }
 
 function formatCompanyName(companyName){
-    return companyName.split("·")[0];
+    return capitalizeFirstLetters(companyName.split("·")[0]);
+}
+function capitalizeFirstLetters(companyName){
+    return companyName.trim().split(" ").map(
+                       word=>word.charAt(0)
+                      .toUpperCase()+word.slice(1))
+                    .join(' ');
 }
 
