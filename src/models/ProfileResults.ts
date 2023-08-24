@@ -23,7 +23,7 @@ interface jobExperience{
 
 class companyTenure{
     averageTenure:string;
-    shortestTenure:number=0;
+    shortestTenure:string;
     shortestCompanyName:string=""
 }
 
@@ -102,42 +102,49 @@ export class ProfileResults{
     }
 
     fillCompanyTenure(){
-        this.companyTenure.averageTenure=this.calculateAverageTenure();
-        // this.experiencesData.map((exp:Experience)=>{
-        //    if(exp.duration<5){
-        //       this.companyTenure.shortestTenure=exp.duration;
-        //       this.companyTenure.shortestCompanyName=exp.companyTitle;
-        //       return;
-        //    }
-
-        // })
-        
-    }
-    calculateAverageTenure(){
-        let totalYears=0,totalMonths=0;
+        let totalYears=0,totalMonths=0,minTenure=10000,shortestTenureCompanyName="";
+       
         this.experiencesData.map(exp=>{
              let numbers=exp.duration.match(/\d+/g);
              if(numbers==null) return;
+             let actualTenureInMonths=0;
              if(numbers.length==2){
                 totalYears+= parseInt(numbers[0]);
                 totalMonths+=parseInt(numbers[1]);
+                actualTenureInMonths=parseInt(numbers[0])*12+parseInt(numbers[1]);
              } else if(numbers.length==1){
-                if(exp.duration.includes("yr")) totalYears+= parseInt(numbers[0]);
-                else totalMonths+=parseInt(numbers[0]);
+                if(exp.duration.includes("yr")) {
+                    totalYears+= parseInt(numbers[0]);
+                    actualTenureInMonths=parseInt(numbers[0])*12;
+                }
+                else {
+                    totalMonths+=parseInt(numbers[0]);
+                    actualTenureInMonths=parseInt(numbers[0]);
+                }
              }
+             // calculate min tenure
+             if(totalYears<5 && actualTenureInMonths<minTenure){
+                minTenure=actualTenureInMonths;
+                shortestTenureCompanyName=exp.companyTitle;
+             }
+             
            
         })
          // @ts-ignore
         let totalExperiencesInMonths=totalYears*12 + totalMonths;
-        let averageExperienceInMonths=Math.round(totalExperiencesInMonths/this.experiencesData.length);
-        if(averageExperienceInMonths<12) return  averageExperienceInMonths+ " months ";   
-        let averageTenure= Math.ceil(averageExperienceInMonths/12)+" years "
-        + (averageExperienceInMonths %  12) +" months ";
-        return averageTenure;
+        let averageExperienceInMonths=Math.floor(totalExperiencesInMonths/this.experiencesData.length);
+       
+        let averageTenure=this.formatTenureMessage(averageExperienceInMonths);
         
+        this.companyTenure.averageTenure=averageTenure;
+        this.companyTenure.shortestCompanyName=shortestTenureCompanyName;
+        this.companyTenure.shortestTenure=this.formatTenureMessage(minTenure);
     }
-     
     
+     formatTenureMessage(monthsCount:number){
+        if(monthsCount<12) return monthsCount + " mos";
+        else return Math.floor(monthsCount/12) + " yrs " + monthsCount%12 +" mos";
+    } 
 
     build(){
         this.fillDomain();

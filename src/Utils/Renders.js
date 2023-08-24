@@ -34,7 +34,7 @@ export function renderRecentJobs(recentJobs){
 export function renderCompanyTenure(companyTenureData){
     return (<>
     <p className="block_element">avg company tenure: {companyTenureData.averageTenure} per company</p>
-           <p className="block_element">shortest tenure in 5 years:  {companyTenureData.shortestTenure} years at {companyTenureData.shortestCompanyName}</p></>)
+           <p className="block_element">shortest tenure in 5 years:  {companyTenureData.shortestTenure}  at {companyTenureData.shortestCompanyName}</p></>)
 }
 
 export function formatYear(duration){
