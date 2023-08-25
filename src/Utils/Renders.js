@@ -2,11 +2,17 @@
 export function renderDomain(domainData){
     console.log(domainData)
     
-    return domainData.experiences.map(exper=>
+    return (
+        <>
+        <p className="block_element"> {domainData.totalExperience} in {domainData.domain} </p>
+    {domainData.experiences.map(exper=>
          (
             <p className="block_element">{exper.duration} at {exper.companyTitle}</p>
-        )
+        ))}
+        </>
     )
+        
+    
 }
 export function renderEmployeeRange(employeeRangeData){
     return employeeRangeData.map(emplCompany=>(
@@ -19,7 +25,7 @@ export function renderEmployeeRange(employeeRangeData){
 export function renderVentureBacked(ventureData){
     return ventureData.map(ventureComp=>(
         ventureComp.fundAmount ?
-        <p className="block_element">{ventureComp.years}  at {ventureComp.company} with ${ventureComp.fundAmount}funding</p>
+        <p className="block_element">{ventureComp.years}  at {ventureComp.company} with ${ventureComp.fundAmount} funding</p>
         :null
         ))
 

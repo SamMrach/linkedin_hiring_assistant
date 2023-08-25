@@ -10,6 +10,8 @@ import {fetchCompaniesData} from "../Utils/Clearbit"
 export const Jobslist = () => {
     const [jobs,setJobs]=useState([]);
     const [loading,setLoading]=useState(false);
+    const navigate=useNavigate();
+
     useEffect(()=>{
         if(localStorage.getItem("jobs") !== null){
             setJobs(JSON.parse(localStorage.getItem("jobs")));
@@ -17,7 +19,7 @@ export const Jobslist = () => {
         chrome.runtime.onMessage.addListener(async (msg)=>{
             if(msg.req="scraped experiences"){
                 let allExperiencesDetails=await fillExperiencesWithClearbitData(msg.experiences);
-                
+                console.log("allExperiencesDetails",allExperiencesDetails)
                 let profileResults=new ProfileResults(allExperiencesDetails);
                 profileResults.build();
                 console.log("profile ",profileResults);
@@ -26,7 +28,7 @@ export const Jobslist = () => {
             }
         })
     },[])
-    const navigate=useNavigate();
+    
     const goToAddJob=()=>{
         navigate('/add_job');
     }
@@ -38,27 +40,26 @@ export const Jobslist = () => {
     }
 
     async function fillExperiencesWithClearbitData(experiences){
-        console.log(experiences)
+        let experiencesTemp=[...experiences]
        const companiesName=[...new Set(experiences.map(exp=>exp.companyTitle))]; 
        const companiesClearBitData=await fetchCompaniesData(companiesName);
-      
-       console.log(companiesClearBitData);
        let companiesDataMap=new Map();
        companiesClearBitData.map(cmp=>companiesDataMap.set(cmp.name,cmp));
-       console.log("companies map data",companiesDataMap);
-       experiences.map(exp=>{
+      
+       experiencesTemp.map(exp=>{
         if(companiesDataMap.has(exp.companyTitle.trim())){
-            console.log(companiesDataMap.get(exp.companyTitle.trim()))
+            
             let companyClearbitData=companiesDataMap.get(exp.companyTitle.trim());
             exp.industry=companyClearbitData.industry;
             exp.employees_range=companyClearbitData.employees_range;
             exp.fund_amount=companyClearbitData.fund_amount;
+            exp.tags=companyClearbitData.tags;
         }
         
        })
        
-       console.log("exp details",experiences);
-       return experiences;
+       console.log("exp temp details",experiencesTemp);
+       return experiencesTemp;
     }
   return (
     <>

@@ -5,5 +5,6 @@ export interface Experience{
     description:string,
     industry:number,
     employees_range:string,
-    fund_amount:string
+    fund_amount:string,
+    tags:[]
 }

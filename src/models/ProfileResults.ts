@@ -2,7 +2,7 @@
 import { Experience } from "./Experience";
 class Domain{
   domain:string="";
-  yearsOfExperience:number=0;
+  totalExperience:string="";
   experiences:[]=[]
   
 }
@@ -46,6 +46,7 @@ export class ProfileResults{
         industry:number,
         employees_range:string,
         fund_amount:string,
+        tags:[]
         };
 
     constructor(experiencesData:[]){
@@ -58,14 +59,16 @@ export class ProfileResults{
     
    
     fillDomain(){
-        //let yearsOfExperience=0;
+        let experienceInMonths=0;
+        
         this.experiencesData.map((exp:Experience)=>{
-            // if(exp.industry==this.hiringCompany.industry) 
-            // yearsOfExperience+=exp.duration;
+            if(this.hiringCompany.tags.some(tag=>exp.tags?.includes(tag)))
+            experienceInMonths+= this.getExperienceInMonths(exp.duration);
           this.domain.experiences.push({
             companyTitle:exp.companyTitle,
             duration:exp.duration});
         })
+        this.domain.totalExperience=this.formatTenureMessage(experienceInMonths);
         //if(yearsOfExperience) 
         //this.domain.yearsOfExperience=yearsOfExperience;
 
@@ -141,10 +144,27 @@ export class ProfileResults{
         this.companyTenure.shortestTenure=this.formatTenureMessage(minTenure);
     }
     
-     formatTenureMessage(monthsCount:number){
+    formatTenureMessage(monthsCount:number){
         if(monthsCount<12) return monthsCount + " mos";
         else return Math.floor(monthsCount/12) + " yrs " + monthsCount%12 +" mos";
     } 
+
+    getExperienceInMonths(companyTenure:string){
+        let numbers=companyTenure.match(/\d+/g);
+        if(numbers==null) return;
+        let actualTenureInMonths=0;
+        if(numbers.length==2){
+            actualTenureInMonths=parseInt(numbers[0])*12+parseInt(numbers[1]);
+         } else if(numbers.length==1){
+            if(numbers.includes("yr")) {
+                actualTenureInMonths=parseInt(numbers[0])*12;
+            }
+            else {
+                actualTenureInMonths=parseInt(numbers[0]);
+            }
+         }
+         return actualTenureInMonths;
+    }
 
     build(){
         this.fillDomain();

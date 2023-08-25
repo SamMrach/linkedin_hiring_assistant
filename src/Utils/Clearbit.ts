@@ -21,14 +21,15 @@ export async function fetchCompanyDataByDomain(DOMAIN){
   }; 
   let res=await  fetch(url, { headers });
   let data=await res.json();
-  let {name,category,metrics,domain} = data;
+  let {name,category,metrics,domain,tags} = data;
        
       let companyData={
         'name':name,
          'industry':category.industry,
          'employees_range':metrics.employeesRange,
          'fund_amount':metrics.raised,
-         'domain':domain
+         'domain':domain,
+         'tags':tags
 
       }
       console.log(companyData);
