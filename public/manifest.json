@@ -1,9 +1,9 @@
 {
   "manifest_version": 3,
-  "name": "cavo",
+  "name": "Cavo",
   "version": "1.0",
-  "description": "cavo",
-  "permissions": ["tabs", "storage","scripting"],
+  "description": "Linkedin Hiring Assistant",
+  "permissions": ["tabs", "storage"],
   "background": {
     "service_worker": "background.js"
   },

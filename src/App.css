@@ -1,14 +1,13 @@
-.container{
-    width:400px;
-    height: 500px;
-    padding: 5px 10px;
-
+.container {
+  width: 400px;
+  height: 500px;
+  padding: 5px 10px;
 }
-.horizontal_flex{
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
+.horizontal_flex {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 }
-.fivepx_margin{
+.fivepx_margin {
   margin-top: 5px;
 }
