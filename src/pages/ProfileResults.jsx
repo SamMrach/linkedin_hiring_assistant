@@ -5,6 +5,8 @@ import Button from '@mui/material/Button';
 import { renderDomain,renderEmployeeRange,renderVentureBacked,renderRecentJobs,renderCompanyTenure } from '../Utils/Renders';
 import { TextField } from '@mui/material'
 import { useLocation } from 'react-router-dom';
+import {generateOutboundMessage} from "../Utils/OpenAi";
+
 export default function ProfileResults() {
     const [generatedMsg,setGeneratedMsg]=useState({
         linkedin_subject_line:"",
@@ -13,15 +15,37 @@ export default function ProfileResults() {
         email_message:""
     }) 
     const {state}=useLocation();
-    const generateOutboundMsg=()=>{
-
-    }
     const {domain,
         employeeRanges,
         ventureBackedCompanies,
         jobExperiences,
         companyTenure,
         notes}=state.profileResults;
+
+    const generateOutboundMsg=()=>{
+        let hiringCompanyProfile=getHiringCompany(); // {hiringCompanyName,hiringCompanyDomain}
+        let openedJob=getOpenedJob(); //{jobtTitle,jobDomain,desiredExp,desiredDomainExp}
+        let candidateProfile={
+            domainName:domain.domain,
+            YearsOfExperience:domain.totalExperience.replaceAll("yr","year").replaceAll("mo","month"),
+            experiences:domain.experiences,
+            jobTitle:jobExperiences[0].jobTitle
+        }
+        generateOutboundMessage(hiringCompanyProfile,openedJob,candidateProfile)
+    }
+
+    const getHiringCompany=()=>{
+        if(localStorage.getItem('hiring company'))
+        return JSON.parse(localStorage.getItem('hiring company'));
+        return null;   
+    }
+ 
+    const getOpenedJob=()=>{
+        if(localStorage.getItem("jobs") !== null){
+          return JSON.parse(localStorage.getItem('jobs'))[0];
+        }
+    }
+   
     useEffect(()=>{
       console.log("profile results",state.profileResults)
     },[])

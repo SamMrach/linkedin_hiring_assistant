@@ -1,6 +1,7 @@
 import {useState,React, useEffect} from 'react'
 import { TextField } from '@mui/material'
 import { fetchCompanyData, fetchCompanyDataByDomain } from '../Utils/Clearbit';
+import { CompanyProfile } from '../models/Experience';
 export const Setup = () => {
     const [hiringCompanyDomain,setHiringCompanyDomain]=useState("");
     const [validDomainName,setValidDomainName]=useState(false);
@@ -19,8 +20,10 @@ export const Setup = () => {
      if(isDomain(e.target.value)){
       setValidDomainName(true);
       let hiringCmpData=await fetchCompanyDataByDomain(e.target.value);
-      console.log(hiringCmpData);
-      localStorage.setItem("hiring company",JSON.stringify(hiringCmpData))
+      let hiringCmpProfile=new CompanyProfile();
+      hiringCmpProfile.setCompanyProfile(hiringCmpData);
+      console.log("hiring Cmp Profile",hiringCmpProfile)
+      localStorage.setItem("hiring company",JSON.stringify(hiringCmpProfile))
 
      }else{
       setValidDomainName(false)
@@ -29,7 +32,7 @@ export const Setup = () => {
 
     useEffect(()=>{
       if(localStorage.getItem('hiring company')){
-        let domainName=JSON.parse(localStorage.getItem('hiring company')).domain;
+        let domainName=JSON.parse(localStorage.getItem('hiring company')).domainName;
         setHiringCompanyDomain(domainName);
         setValidDomainName(true);
       }

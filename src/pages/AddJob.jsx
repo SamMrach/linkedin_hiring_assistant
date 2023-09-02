@@ -19,7 +19,7 @@ export const AddJob = () => {
        
         let api=localStorage;
         if(localStorage.getItem("jobs") !== null){
-            let jobs=[...localStorage.getItem("jobs")];
+            let jobs=[...JSON.parse(localStorage.getItem("jobs"))];
             jobs.push(job);
             localStorage.setItem("jobs",JSON.stringify(jobs))
             console.log(localStorage.getItem("jobs"))
@@ -47,11 +47,11 @@ export const AddJob = () => {
   return (
     <>
     <div className="horizontal_flex fivepx_margin">
-    <TextField id="outlined-basic" label="job_title" name="title" variant="outlined" value={job.title} onChange={handleChange} />
+    <TextField id="outlined-basic" label="job_title" name="title" variant="outlined" value={job.jobtTitle} onChange={handleChange} />
     <TextField id="outlined-basic" label="desired experience" name="desiredExp" variant="outlined" value={job.desiredExp} onChange={handleChange} />
     </div>
     <div className="horizontal_flex fivepx_margin">
-    <TextField id="outlined-basic" label="domain" name="domain" variant="outlined" value={job.domain} onChange={handleChange} />
+    <TextField id="outlined-basic" label="domain" name="domain" variant="outlined" value={job.jobDomain} onChange={handleChange} />
     <TextField id="outlined-basic" label="desired domain experience" name="desiredDomainExp" variant="outlined" value={job.desiredDomainExp} onChange={handleChange} />
     </div>
     <div className="horizontal_flex fivepx_margin">

@@ -4,7 +4,7 @@ export function renderDomain(domainData){
     
     return (
         <>
-        <p className="block_element"> {domainData.totalExperience} in {domainData.domain} </p>
+        {/* <p className="block_element"> {domainData.totalExperience} in {domainData.domain} </p> */}
     {domainData.experiences.map(exper=>
          (
             <p className="block_element">{exper.duration} at {exper.companyTitle}</p>
