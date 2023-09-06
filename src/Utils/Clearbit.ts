@@ -13,7 +13,7 @@ export async function fetchCompanyData(companyName) {
 }
 
 export async function fetchCompanyDataByDomain(DOMAIN) {
-  const API_KEY = 'sk_6e39d6ee2a598061f11e93866c1093b2';
+  const API_KEY = 'clearbit_api_key';
   const url = `https://company.clearbit.com/v2/companies/find?domain=${DOMAIN}`;
   const headers = {
     Authorization: `Bearer ${API_KEY}`,
